@@ -112,6 +112,8 @@ optional arguments:
 
 [[top](#sections)]
 
+#### v. 2.0.0 (in progress)
+
 #### v. 1.7.0 (October 13, 2018)
 
 (Via contribution by [James Myatt](https://github.com/jamesmyatt))

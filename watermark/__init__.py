@@ -6,14 +6,13 @@
 # License: BSD 3 clause
 
 
+from __future__ import absolute_import
+
 import sys
 
+from .watermark import *
 
-__version__ = '1.7.0'
 
-if sys.version_info >= (3, 0):
-    from watermark.watermark import *
-else:
-    from watermark import *
+__version__ = "2.0.0.dev"
 
-__all__ = ['watermark']
+__all__ = ["watermark"]
