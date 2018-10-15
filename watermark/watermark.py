@@ -40,42 +40,63 @@ class WaterMark(Magics):
     and various system information.
 
     """
+
     @magic_arguments()
-    @argument('-a', '--author', type=str,
-              help='prints author name')
-    @argument('-d', '--date', action='store_true',
-              help='prints current date as YYYY-mm-dd')
-    @argument('-n', '--datename', action='store_true',
-              help='prints date with abbrv. day and month names')
-    @argument('-t', '--time', action='store_true',
-              help='prints current time as HH-MM-SS')
-    @argument('-i', '--iso8601', action='store_true',
-              help='prints the combined date and time including the time zone'
-                   ' in the ISO 8601 standard with UTC offset')
-    @argument('-z', '--timezone', action='store_true',
-              help='appends the local time zone')
-    @argument('-u', '--updated', action='store_true',
-              help='appends a string "Last updated: "')
-    @argument('-c', '--custom_time', type=str,
-              help='prints a valid strftime() string')
-    @argument('-v', '--python', action='store_true',
-              help='prints Python and IPython version')
-    @argument('-p', '--packages', type=str,
-              help='prints versions of specified Python modules and packages')
-    @argument('-h', '--hostname', action='store_true',
-              help='prints the host name')
-    @argument('-m', '--machine', action='store_true',
-              help='prints system and machine info')
-    @argument('-g', '--githash', action='store_true',
-              help='prints current Git commit hash')
-    @argument('-r', '--gitrepo', action='store_true',
-              help='prints current Git remote address')
-    @argument('-b', '--gitbranch', action='store_true',
-              help='prints current Git branch')
-    @argument('-w', '--watermark', action='store_true',
-              help='prints the current version of watermark')
-    @argument('-iv', '--iversions', action='store_true',
-              help='prints the name/version of all imported modules')
+    @argument('-a', '--author', type=str, help='prints author name')
+    @argument(
+        '-d', '--date', action='store_true', help='prints current date as YYYY-mm-dd'
+    )
+    @argument(
+        '-n',
+        '--datename',
+        action='store_true',
+        help='prints date with abbrv. day and month names',
+    )
+    @argument('-t', '--time', action='store_true', help='prints current time as HH-MM-SS')
+    @argument(
+        '-i',
+        '--iso8601',
+        action='store_true',
+        help='prints the combined date and time including the time zone'
+        ' in the ISO 8601 standard with UTC offset',
+    )
+    @argument('-z', '--timezone', action='store_true', help='appends the local time zone')
+    @argument(
+        '-u', '--updated', action='store_true', help='appends a string "Last updated: "'
+    )
+    @argument('-c', '--custom_time', type=str, help='prints a valid strftime() string')
+    @argument(
+        '-v', '--python', action='store_true', help='prints Python and IPython version'
+    )
+    @argument(
+        '-p',
+        '--packages',
+        type=str,
+        help='prints versions of specified Python modules and packages',
+    )
+    @argument('-h', '--hostname', action='store_true', help='prints the host name')
+    @argument(
+        '-m', '--machine', action='store_true', help='prints system and machine info'
+    )
+    @argument(
+        '-g', '--githash', action='store_true', help='prints current Git commit hash'
+    )
+    @argument(
+        '-r', '--gitrepo', action='store_true', help='prints current Git remote address'
+    )
+    @argument('-b', '--gitbranch', action='store_true', help='prints current Git branch')
+    @argument(
+        '-w',
+        '--watermark',
+        action='store_true',
+        help='prints the current version of watermark',
+    )
+    @argument(
+        '-iv',
+        '--iversions',
+        action='store_true',
+        help='prints the name/version of all imported modules',
+    )
     @line_magic
     def watermark(self, line):
         """
@@ -87,8 +108,7 @@ class WaterMark(Magics):
 
         if not any(vars(args).values()) or args.iso8601:
             try:
-                dt = datetime.datetime.fromtimestamp(int(time()),
-                                                     datetime.timezone.utc)
+                dt = datetime.datetime.fromtimestamp(int(time()), datetime.timezone.utc)
                 iso_dt = dt.astimezone().isoformat()
             except AttributeError:  # timezone only supported by Py >=3.2:
                 iso_dt = strftime('%Y-%m-%dT%H:%M:%S')
@@ -151,11 +171,13 @@ class WaterMark(Magics):
             if p == 'scikit-learn':
                 p = 'sklearn'
                 warnings.simplefilter('always', DeprecationWarning)
-                warnings.warn("Importing scikit-learn as `scikit-learn` has"
-                              " been depracated and will not be supported"
-                              " anymore in v1.7.0. Please use the package"
-                              " name `sklearn` instead.",
-                              DeprecationWarning)
+                warnings.warn(
+                    'Importing scikit-learn as `scikit-learn` has'
+                    ' been depracated and will not be supported'
+                    ' anymore in v1.7.0. Please use the package'
+                    ' name `sklearn` instead.',
+                    DeprecationWarning,
+                )
             try:
                 imported = __import__(p)
             except ImportError:
@@ -201,9 +223,9 @@ class WaterMark(Magics):
         )
 
     def _get_commit_hash(self, machine):
-        process = subprocess.Popen(['git', 'rev-parse', 'HEAD'],
-                                   shell=False,
-                                   stdout=subprocess.PIPE)
+        process = subprocess.Popen(
+            ['git', 'rev-parse', 'HEAD'], shell=False, stdout=subprocess.PIPE
+        )
         git_head_hash = process.communicate()[0].strip()
         space = ''
         if machine:
@@ -211,10 +233,11 @@ class WaterMark(Magics):
         self.out += '\nGit hash{}: {}'.format(space, git_head_hash.decode('utf-8'))
 
     def _get_git_remote_origin(self, machine):
-        process = subprocess.Popen(['git', 'config', '--get',
-                                    'remote.origin.url'],
-                                   shell=False,
-                                   stdout=subprocess.PIPE)
+        process = subprocess.Popen(
+            ['git', 'config', '--get', 'remote.origin.url'],
+            shell=False,
+            stdout=subprocess.PIPE,
+        )
         git_remote_origin = process.communicate()[0].strip()
         space = ''
         if machine:
@@ -222,10 +245,11 @@ class WaterMark(Magics):
         self.out += '\nGit repo{}: {}'.format(space, git_remote_origin.decode('utf-8'))
 
     def _get_git_branch(self, machine):
-        process = subprocess.Popen(['git', 'rev-parse', '--abbrev-ref',
-                                    'HEAD'],
-                                   shell=False,
-                                   stdout=subprocess.PIPE)
+        process = subprocess.Popen(
+            ['git', 'rev-parse', '--abbrev-ref', 'HEAD'],
+            shell=False,
+            stdout=subprocess.PIPE,
+        )
         git_branch = process.communicate()[0].strip()
         space = ''
         if machine:
