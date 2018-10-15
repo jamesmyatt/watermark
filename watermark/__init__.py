@@ -10,9 +10,7 @@ from __future__ import absolute_import
 
 import sys
 
+from .watermark import __version__
 from .watermark import *
-
-
-__version__ = "2.0.0.dev"
 
 __all__ = ["watermark"]

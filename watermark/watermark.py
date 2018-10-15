@@ -8,6 +8,9 @@ License: BSD 3 clause
 
 from __future__ import print_function
 
+__version__ = "2.0.0.dev"
+
+
 import platform
 import subprocess
 from time import strftime
@@ -25,8 +28,6 @@ from IPython.core.magic import line_magic
 from IPython.core.magic_arguments import argument
 from IPython.core.magic_arguments import magic_arguments
 from IPython.core.magic_arguments import parse_argstring
-
-from . import __version__
 
 
 class PackageNotFoundError(Exception):
