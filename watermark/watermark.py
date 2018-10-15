@@ -6,7 +6,8 @@ Author: Sebastian Raschka <sebastianraschka.com>
 License: BSD 3 clause
 """
 
-from . import __version__
+from __future__ import print_function
+
 import platform
 import subprocess
 from time import strftime
@@ -24,6 +25,8 @@ from IPython.core.magic import line_magic
 from IPython.core.magic_arguments import argument
 from IPython.core.magic_arguments import magic_arguments
 from IPython.core.magic_arguments import parse_argstring
+
+from . import __version__
 
 
 class PackageNotFoundError(Exception):
@@ -97,19 +100,19 @@ class WaterMark(Magics):
 
         else:
             if args.author:
-                self.out += '% s ' % args.author.strip('\'"')
+                self.out += '{} '.format(args.author.strip("'\""))
             if args.updated and args.author:
                 self.out += '\n'
             if args.updated:
                 self.out += 'last updated: '
             if args.custom_time:
-                self.out += '%s ' % strftime(args.custom_time)
+                self.out += '{} '.format(strftime(args.custom_time))
             if args.date:
-                self.out += '%s ' % strftime('%Y-%m-%d')
+                self.out += '{} '.format(strftime('%Y-%m-%d'))
             elif args.datename:
-                self.out += '%s ' % strftime('%a %b %d %Y')
+                self.out += '{} '.format(strftime('%a %b %d %Y'))
             if args.time:
-                self.out += '%s ' % strftime('%H:%M:%S')
+                self.out += '{} '.format(strftime('%H:%M:%S'))
             if args.timezone:
                 self.out += strftime('%Z')
             if args.iso8601:
@@ -124,7 +127,7 @@ class WaterMark(Magics):
                 space = ''
                 if args.machine:
                     space = '  '
-                self.out += '\nhost name%s: %s' % (space, gethostname())
+                self.out += '\nhost name{}: {}'.format(space, gethostname())
             if args.githash:
                 self._get_commit_hash(bool(args.machine))
             if args.gitrepo:
@@ -136,7 +139,7 @@ class WaterMark(Magics):
             if args.watermark:
                 if self.out:
                     self.out += '\n'
-                self.out += 'watermark %s' % __version__
+                self.out += 'watermark {}'.format(__version__)
         print(self.out.strip())
 
     def _get_packages(self, pkgs):
@@ -169,29 +172,33 @@ class WaterMark(Magics):
                         except AttributeError:
                             ver = 'unknown'
 
-            self.out += '\n%s %s' % (p, ver)
+            self.out += '\n{} {}'.format(p, ver)
 
     def _get_pyversions(self):
         if self.out:
             self.out += '\n\n'
-        self.out += '%s %s\nIPython %s' % (
+        self.out += '{} {}\nIPython {}'.format(
             platform.python_implementation(),
             platform.python_version(),
-            IPython.__version__)
+            IPython.__version__,
+        )
 
     def _get_sysinfo(self):
         if self.out:
             self.out += '\n\n'
-        self.out += ('compiler   : %s\nsystem     : %s\n'
-                     'release    : %s\nmachine    : %s\n'
-                     'processor  : %s\nCPU cores  : %s\ninterpreter: %s') % (
+        self.out += (
+            'compiler   : {}\nsystem     : {}\n'
+            'release    : {}\nmachine    : {}\n'
+            'processor  : {}\nCPU cores  : {}\ninterpreter: {}'
+        ).format(
             platform.python_compiler(),
             platform.system(),
             platform.release(),
             platform.machine(),
             platform.processor(),
             cpu_count(),
-            platform.architecture()[0])
+            platform.architecture()[0],
+        )
 
     def _get_commit_hash(self, machine):
         process = subprocess.Popen(['git', 'rev-parse', 'HEAD'],
@@ -201,8 +208,7 @@ class WaterMark(Magics):
         space = ''
         if machine:
             space = '   '
-        self.out += '\nGit hash%s: %s' % (space,
-                                          git_head_hash.decode("utf-8"))
+        self.out += '\nGit hash{}: {}'.format(space, git_head_hash.decode('utf-8'))
 
     def _get_git_remote_origin(self, machine):
         process = subprocess.Popen(['git', 'config', '--get',
@@ -213,8 +219,7 @@ class WaterMark(Magics):
         space = ''
         if machine:
             space = '   '
-        self.out += '\nGit repo%s: %s' % (space,
-                                          git_remote_origin.decode("utf-8"))
+        self.out += '\nGit repo{}: {}'.format(space, git_remote_origin.decode('utf-8'))
 
     def _get_git_branch(self, machine):
         process = subprocess.Popen(['git', 'rev-parse', '--abbrev-ref',
@@ -225,8 +230,7 @@ class WaterMark(Magics):
         space = ''
         if machine:
             space = ' '
-        self.out += '\nGit branch%s: %s' % (space,
-                                            git_branch.decode("utf-8"))
+        self.out += '\nGit branch{}: {}'.format(space, git_branch.decode('utf-8'))
 
     @staticmethod
     def _print_all_import_versions(vars):
