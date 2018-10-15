@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/rasbt/watermark.svg?branch=master)](https://travis-ci.org/rasbt/watermark)
 [![PyPI version](https://badge.fury.io/py/watermark.svg)](http://badge.fury.io/py/watermark)
-![Python 2.7](https://img.shields.io/badge/python-2.7-blue.svg)
 ![Python 3.5](https://img.shields.io/badge/python-3.5-blue.svg)
 ![License](https://img.shields.io/badge/license-BSD-blue.svg)
 
@@ -8,8 +7,10 @@ watermark
 =========
 
 An IPython magic extension for printing date and time stamps, version numbers, and hardware information.
-<br>
 
+Starting from v2.x, this library requires Python 3.5 or newer. Use the v1.x branch if you use earlier versions of Python. In particular, these requirements are synchronized with [IPython 7.x](https://ipython.readthedocs.io/en/stable/whatsnew/version7.html).
+
+<br>
 
 #### Sections
 
@@ -113,6 +114,8 @@ optional arguments:
 [[top](#sections)]
 
 #### v. 2.0.0 (in progress)
+
+- Require Python 3.5+ to match IPython 7.x (Via contribution by [James Myatt](https://github.com/jamesmyatt))
 
 #### v. 1.7.0 (October 13, 2018)
 
