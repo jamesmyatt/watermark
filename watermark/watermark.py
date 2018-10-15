@@ -168,16 +168,6 @@ class WaterMark(Magics):
         packages = pkgs.split(',')
 
         for p in packages:
-            if p == 'scikit-learn':
-                p = 'sklearn'
-                warnings.simplefilter('always', DeprecationWarning)
-                warnings.warn(
-                    'Importing scikit-learn as `scikit-learn` has'
-                    ' been depracated and will not be supported'
-                    ' anymore in v1.7.0. Please use the package'
-                    ' name `sklearn` instead.',
-                    DeprecationWarning,
-                )
             try:
                 imported = __import__(p)
             except ImportError:
